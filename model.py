@@ -20,7 +20,7 @@ for line in lines:
         source_path = line[i]
         tokens = source_path.split('/')
         filename = tokens[-1]
-        local_path = "./data/IMG" + filename
+        local_path = "../data/IMG" + filename
         image = csv2.imread(local_path)
         images.append(image)
     correction = 0.2
@@ -60,7 +60,6 @@ model.add(Dense(10))
 model.add(Dense(1))
 
 model.compile(optimizer='adam', loss='mse')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epochs=3)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epochs=7)
 
 model.save('model.h5')
-s
