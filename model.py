@@ -8,7 +8,7 @@ from keras.layers.convolutional import Convolution2D, Cropping2D
 from keras.layers.pooling import MaxPooling2D
 
 lines = []
-with open('../data/driving_log.csv') as csvfile: 
+with open('../data-3/driving_log.csv') as csvfile: 
     reader = csv.reader(csvfile)
     header = next(reader, None)
     for line in reader: 
@@ -21,7 +21,7 @@ for line in lines:
         source_path = line[i]
         tokens = source_path.split('/')
         filename = tokens[-1]
-        local_path = "../data/IMG/" + filename
+        local_path = "../data-3/IMG/" + filename
         image = cv2.imread(local_path)
         images.append(image)
         correction = 0.2
@@ -60,6 +60,6 @@ model.add(Dense(10))
 model.add(Dense(1))
 
 model.compile(optimizer='adam', loss='mse')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=7)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=3)
 
-model.save('model.h5')
+model.save('model-3.h5')
