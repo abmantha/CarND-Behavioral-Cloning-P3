@@ -23,6 +23,7 @@ for line in lines:
         filename = tokens[-1]
         local_path = "../data-3/IMG/" + filename
         image = cv2.imread(local_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
         images.append(image)
         correction = 0.2
     measurement = float(line[3])
@@ -62,4 +63,4 @@ model.add(Dense(1))
 model.compile(optimizer='adam', loss='mse')
 model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=3)
 
-model.save('model-3.h5')
+model.save('model-4.h5')
