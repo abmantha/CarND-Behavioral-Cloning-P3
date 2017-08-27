@@ -23,7 +23,9 @@ with open('../data-4/driving_log.csv') as csvfile:
     for line in reader: 
         samples.append(line)
 
-train_samples, validation_samples = train_test_split(samples, test_size=0.2)
+train_samples, validation_samples = train_test_split(samples, test_size=0.33)
+print (len(train_samples))
+print (len(validation_samples))
 
 # images = []
 # measurements = []
@@ -73,7 +75,7 @@ def generator(samples, batch_size=32):
                     image = cv2.imread(name)
                     image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
                     images.append(image)
-                correction = 0.
+                correction = 0.1
                 center_angle = float(batch_sample[3])
                 angles.append(center_angle)
                 angles.append(center_angle + correction)
@@ -101,15 +103,10 @@ model = Sequential()
 model.add(Lambda(lambda x: x / 127.5 - 1.0, input_shape=(160, 320, 3), output_shape=(160, 320, 3)))
 model.add(Cropping2D(cropping=((70, 25), (0,0))))
 model.add(Convolution2D(24, 5, 5, subsample=(2, 2), activation='relu'))
-model.add(Dropout(0.9))
 model.add(Convolution2D(36, 5, 5, subsample=(2, 2), activation='relu'))
-model.add(Dropout(0.8))
 model.add(Convolution2D(48, 5, 5, subsample=(2, 2), activation='relu'))
-model.add(Dropout(0.7))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
-model.add(Dropout(0.6))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
-model.add(Dropout(0.5))
 model.add(Flatten())
 model.add(Dense(100))
 model.add(Dropout(0.5))
@@ -134,4 +131,4 @@ history_object = model.fit_generator(train_generator, samples_per_epoch=len(trai
 # plt.legend(['training set', 'validation set'], loc='upper right')
 # plt.show()
 
-model.save('model-7.h5')
+model.save('model-8.h5')
