@@ -106,7 +106,7 @@ model.add(Dense(1))
 
 model.compile(optimizer='adam', loss='mse')
 # model.fit(X_train, y_train, verbose=1, validation_split=0.2, shuffle=True, nb_epoch=3)
-history_object = model.fit_generator(train_generator, samples_per_epoch=len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=3, verbose=1)
+history_object = model.fit_generator(train_generator, samples_per_epoch=len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=5, verbose=1)
 
 # # Print keys contained in history object
 # print (history_object.history.keys())
