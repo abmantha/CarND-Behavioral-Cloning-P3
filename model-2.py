@@ -17,7 +17,7 @@ from keras.layers.pooling import MaxPooling2D
 import matplotlib.pyplot as plt
 
 samples = []
-with open('../data/driving_log.csv') as csvfile: 
+with open('../data-5/driving_log.csv') as csvfile: 
     reader = csv.reader(csvfile)
     header = next(reader, None)
     for line in reader: 
@@ -71,7 +71,7 @@ def generator(samples, batch_size=32):
                     source_path = batch_sample[i]
                     tokens = source_path.split('/')
                     filename = tokens[-1]
-                    name = '../data/IMG/' + filename
+                    name = '../data-5/IMG/' + filename
                     image = cv2.imread(name)
                     image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
                     images.append(image)
@@ -139,4 +139,4 @@ history_object = model.fit_generator(train_generator, samples_per_epoch=(len(tra
 # plt.legend(['training set', 'validation set'], loc='upper right')
 # plt.show()
 
-model.save('model-9.h5')
+model.save('model-10-2.h5')

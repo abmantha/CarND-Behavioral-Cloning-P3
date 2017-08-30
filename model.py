@@ -2,6 +2,12 @@
 # ======================================
 # Architecture
 # Augmentation techniques
+    # Convert to YUV
+    # Use all three images
+    # Crop
+    # Flip + Correct angles
+
+    # Horizontal shifts and darkening ???
 
 import csv
 import cv2
@@ -16,8 +22,71 @@ from keras.layers.convolutional import Convolution2D, Cropping2D
 from keras.layers.pooling import MaxPooling2D
 import matplotlib.pyplot as plt
 
+"""
+def augment_brightness_camera_images(image):
+    image1 = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)
+    random_bright = .25+np.random.uniform()
+    #print(random_bright)
+    image1[:,:,2] = image1[:,:,2]*random_bright
+    image1 = cv2.cvtColor(image1,cv2.COLOR_HSV2RGB)
+    return image1
+
+def transform_image(img, ang_range, shear_range, trans_range, brightness=0):
+    '''
+    This function transforms images to generate new images.
+    The function takes in following arguments,
+    1- Image
+    2- ang_range: Range of angles for rotation
+    3- shear_range: Range of values to apply affine transform to
+    4- trans_range: Range of values to apply translations over.
+
+    A Random uniform distribution is used to generate different parameters for transformation
+    '''
+    # Rotation
+    ang_rot = np.random.uniform(ang_range)-ang_range/2
+    rows, cols, ch = img.shape    
+    Rot_M = cv2.getRotationMatrix2D((cols/2,rows/2),ang_rot,1)
+
+    # Translation
+    tr_x = trans_range*np.random.uniform()-trans_range/2
+    tr_y = trans_range*np.random.uniform()-trans_range/2
+    Trans_M = np.float32([[1,0,tr_x],[0,1,tr_y]])
+
+    # Shear
+    pts1 = np.float32([[5,5],[20,5],[5,20]])
+
+    pt1 = 5+shear_range*np.random.uniform()-shear_range/2
+    pt2 = 20+shear_range*np.random.uniform()-shear_range/2
+
+    # Brightness
+    pts2 = np.float32([[pt1,5],[pt2,pt1],[5,pt2]])
+
+    shear_M = cv2.getAffineTransform(pts1,pts2)
+
+    img = cv2.warpAffine(img,Rot_M,(cols,rows))
+    img = cv2.warpAffine(img,Trans_M,(cols,rows))
+    img = cv2.warpAffine(img,shear_M,(cols,rows))
+
+    if brightness == 1:
+        img = augment_brightness_camera_images(img)
+
+    return img
+
+def generate_random_samples(image, n, ang_range, shear_range, trans_range, brightness): 
+    return [transform_image(image, ang_range, shear_range, trans_range, brightness) for i in range(n)]
+
+# Grayscale image data
+def grayscale(image_data): 
+    return np.sum(image_data / 3, axis=3, keepdims=True)
+
+# Normalize grayscale image data
+def normalize_grayscale(image_data): 
+    return (image_data - 128) / 128.0
+
+"""
+
 samples = []
-with open('../data/driving_log.csv') as csvfile: 
+with open('../data-5/driving_log.csv') as csvfile: 
     reader = csv.reader(csvfile)
     header = next(reader, None)
     for line in reader: 
@@ -57,6 +126,10 @@ print (len(validation_samples))
 # X_train = np.array(augmented_images)
 # y_train = np.array(augmented_measurements)
 
+def preprocess_image(image): 
+    new_image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
+    return new_image
+
 def generator(samples, batch_size=32): 
     num_samples = len(samples)
     while 1: 
@@ -68,12 +141,12 @@ def generator(samples, batch_size=32):
             angles = []
             for batch_sample in batch_samples: 
                 for i in range(3): 
-                    source_path = batch_sample[i]
+                      source_path = batch_sample[i]
                     tokens = source_path.split('/')
                     filename = tokens[-1]
-                    name = '../data/IMG/' + filename
+                    name = '../data-5/IMG/' + filename
                     image = cv2.imread(name)
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
+                    image = preprocess_image(image)
                     images.append(image)
                 correction = 0.1
                 center_angle = float(batch_sample[3])
@@ -90,6 +163,10 @@ def generator(samples, batch_size=32):
                 flipped_angle = -1.0 * angle
                 augmented_images.append(flipped_image)
                 augmented_angles.append(flipped_angle)
+
+            # Investigate the distribution of the data 
+                # 1: Not enough data for the angle sides
+                # 2: Decrease the speed for corners
 
             X_train = np.array(augmented_images)
             y_train = np.array(augmented_angles)
@@ -131,4 +208,4 @@ history_object = model.fit_generator(train_generator, samples_per_epoch=(len(tra
 # plt.legend(['training set', 'validation set'], loc='upper right')
 # plt.show()
 
-model.save('model-9.h5')
+model.save('model-10.h5')
