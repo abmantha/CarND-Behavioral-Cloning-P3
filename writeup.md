@@ -9,7 +9,8 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
+[image1]: ./output_images/visualizing-loss.png 
+[image2]: ./output_images/nvidia-model.png "Model Visualization"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -52,9 +53,11 @@ For the first three convolutional layers, the model employs a 5x5 kernel with a 
 RELU activations were used on all convolutional layers. 
 
 #### 2. Attempts to reduce overfitting in the model
-I did not apply any attempts to reduce overfitting in the model. 
+I did not apply any attempts to reduce overfitting in this model. In previous versions of this model, I used Dropout layers, additional max pool layers, and ELU units, as per the recommendation of the well-known model by [comma.ai](https://github.com/commaai/research/blob/master/train_steering_model.py). However, I found that these additions were leading to overfitting and incorrect driving behavior. 
 
 Here is a screenshot of my AWS EC2 console displaying training and validation losses. 
+
+![alt text][image1]
 
 In 3 epochs, the model significantly drops in training and validation losses. This did worry me. However, after testing on the track, I was able to verify that the model could stay on the track for multiple laps without crossing over valid lane lines or edges. 
 
@@ -82,11 +85,10 @@ I let the model drive for multiple laps and recorded the images. Here's a link t
 
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
-![alt text][image1]
+![alt text][image2]
 
 #### 3. Creation of the Training Set & Training Process
-
-I solely relied on the sample driving data provided by Udacity. For pre-processing, I simply converted images from BGR to RGB color space. In addition, I utilized image data from all 3 cameras. With a basic correction factor of 0.2, I appended the associated steering wheel angle with a correction of 0.2. Furthermore, I flipped all images and produced corresponding steering wheel measures (multiply by -1).  
+For this model, I solely relied on the sample driving data provided by Udacity. For pre-processing, I simply converted images from BGR to RGB color space. In addition, I utilized image data from all 3 cameras. With a basic correction factor of 0.2, I appended the associated steering wheel angle with a correction of 0.2. Furthermore, I flipped all images and produced corresponding steering wheel measures (multiply by -1).  
 
 I finally randomly shuffled the data set and put 80% of the data into a validation set. 
 
@@ -94,3 +96,10 @@ I used this training data for training the model. The validation set helped dete
 
 #### 4. Simulation
 Here is the link to my final video [output](./video-final.mp4). No tire leaves the drivable portion of the track surface, and the car does not pop up onto ledges nor rolls over any surfaces that would otherwise be considered unsafe (if humans were in the vehicle).
+
+### Discussion
+This was hands-down the weirdest project I have worked on. In summary, I have gained a deep appreciation for how powerful deep learning can be. In total, I think I spent over 25 hours working on this project. I implemented some fairly basic architectures, but the main focus of this assignment was data. Getting the right data means everything. I think that things like simulation, and even standard tools like feature engineering, are particularly important for the self-driving car industry. Without these techniques and mechanisms, I don't think companies and researchers would have the success that they currently do. 
+
+The above implementation was approximately my 18th attempt to completing this project. Oddly enough, I'm quite surprised that it worked so easily and so seamlessly on track one. 
+
+In retrospect, I might have attempted to build a simpler architecture. There's been chatter of models consisting of minimal dense layers that have produced outstanding results. Simple architecture and minimal training cost with high efficiency is a top priority for the field. Also, I'd like to have incorporated more data from the second track. As it stands, my model will fail pretty quickly and fails to generalize well. Generalizing this model is definitely something I'd like to tackle when I re-visit this project in the future. 
