@@ -10,7 +10,10 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./output_images/visualizing-loss.png 
-[image2]: ./output_images/nvidia-model.png "Model Visualization"
+[image2]: ./output_images/nvidia-model.png
+[image3]: ./output_images/all-of-my-attempts.png
+[image4]: ./output_images/all-of-my-attempts-2.png
+[image5]: ./output_images/all-of-my-attempts-3.png
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -53,7 +56,7 @@ For the first three convolutional layers, the model employs a 5x5 kernel with a 
 RELU activations were used on all convolutional layers. 
 
 #### 2. Attempts to reduce overfitting in the model
-I did not apply any attempts to reduce overfitting in this model. In previous versions of this model, I used Dropout layers, additional max pool layers, and ELU units, as per the recommendation of the well-known model by [comma.ai](https://github.com/commaai/research/blob/master/train_steering_model.py). However, I found that these additions were leading to overfitting and incorrect driving behavior. 
+I did not apply any attempts to reduce overfitting in this model. In previous versions of this model, I used Dropout layers, additional max pool layers, and ELU units, as per the recommendation of the well-known model by [comma.ai](https://github.com/commaai/research/blob/master/train_steering_model.py). However, I found that though these additions were leading to smaller and smaller training and validation losses, they were certainly leading to incorrect driving behavior, which is what matters. 
 
 Here is a screenshot of my AWS EC2 console displaying training and validation losses. 
 
@@ -67,7 +70,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 #### 4. Appropriate training data
 
-I used Udacity's given data set only. I did implement some basic augmentation that I will describe below. 
+For this model, I used Udacity's given data set only. I did implement some basic augmentation that I will describe below. 
 
 ### Model Architecture and Training Strategy
 
@@ -98,8 +101,16 @@ I used this training data for training the model. The validation set helped dete
 Here is the link to my final video [output](./video-final.mp4). No tire leaves the drivable portion of the track surface, and the car does not pop up onto ledges nor rolls over any surfaces that would otherwise be considered unsafe (if humans were in the vehicle).
 
 ### Discussion
-This was hands-down the weirdest project I have worked on. In summary, I have gained a deep appreciation for how powerful deep learning can be. In total, I think I spent over 25 hours working on this project. I implemented some fairly basic architectures, but the main focus of this assignment was data. Getting the right data means everything. I think that things like simulation, and even standard tools like feature engineering, are particularly important for the self-driving car industry. Without these techniques and mechanisms, I don't think companies and researchers would have the success that they currently do. 
+This was hands-down the weirdest project I have worked on. In summary, I have gained a deep appreciation for how powerful deep learning can be. In total, I think I spent over 25 hours working on this project. I implemented some fairly basic architectures, but the main focus of this assignment was data. In some of my previous iterations of this project, I applied things like horizontal shifts, brightness augmentation and linear transformations. While I found that my training and validation accuracies were becoming lower and lower, I found that the car's driving behavior was simply just wrong. Numerous times, the car would drive well on straight segments, on some turns it would execute them perfectly, and then randomly, out of no-where, the car would go right off the road. Here are some snapshots of some of previous attempts over the last few weeks: 
 
-The above implementation was approximately my 18th attempt to completing this project. Oddly enough, I'm quite surprised that it worked so easily and so seamlessly on track one. 
+![alt text][image3]
+![alt text][image4]
+![alt text][image5]
+
+What baffled me was how the car was able to do something so unexpected, given that it had never even been in that situation during data collection. This honestly frightens me. For something so powerful, many deep learning models are truly black boxes. I still can't wrap my head around the fact the above model works as well as it does. I was not expecting it to outperform my previous approaches that incorporated techniques reported by other students who designed some very powerful architectures and approaches. 
+
+But at the same time, I think that things like simulation, and even standard tools like feature engineering, are particularly important for the self-driving car industry. Without these techniques and mechanisms, I don't think SDC companies and researchers would have the success that they currently do. 
+
+The above implementation was approximately my 14th attempt to completing this project. Oddly enough, I'm quite surprised that it worked so easily and so seamlessly on track one. 
 
 In retrospect, I might have attempted to build a simpler architecture. There's been chatter of models consisting of minimal dense layers that have produced outstanding results. Simple architecture and minimal training cost with high efficiency is a top priority for the field. Also, I'd like to have incorporated more data from the second track. As it stands, my model will fail pretty quickly and fails to generalize well. Generalizing this model is definitely something I'd like to tackle when I re-visit this project in the future. 
