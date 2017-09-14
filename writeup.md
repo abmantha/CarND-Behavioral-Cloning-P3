@@ -110,7 +110,11 @@ I finally randomly shuffled the data set and put 80% of the data into a validati
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. I chose the split percentages based on widespread advice of researchers and ML practitioners. I trained my model for 3 epochs with an Adam optimizer using MSE as loss.
 
 #### 4. Simulation
-Here is the link to my final video [output](./video-final.mp4). No tire leaves the drivable portion of the track surface, and the car does not pop up onto ledges nor rolls over any surfaces that would otherwise be considered unsafe (if humans were in the vehicle).
+Here is the link to my final video [output](./video-final.mp4). No tire leaves the drivable portion of the track surface, and the car does not pop up onto ledges nor rolls over any surfaces that would otherwise be considered unsafe (if humans were in the vehicle). Here are actual image frames that the car sees:
+
+![alt text][image10]
+![alt text][image11]
+![alt text][image12]
 
 ### Discussion
 This was hands-down the weirdest project I have worked on. In summary, I have gained a deep appreciation for how powerful deep learning can be. In total, I think I spent over 25 hours working on this project. I implemented some fairly basic architectures, but the main focus of this assignment was data. In some of my previous iterations of this project, I applied things like horizontal shifts, brightness augmentation and linear transformations. While I found that my training and validation accuracies were becoming lower and lower, I found that the car's driving behavior was simply just wrong. Numerous times, the car would drive well on straight segments, on some turns it would execute them perfectly, and then randomly, out of no-where, the car would go right off the road. Here are some snapshots of some of previous attempts over the last few weeks: 
