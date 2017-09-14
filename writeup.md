@@ -18,6 +18,9 @@ The goals / steps of this project are the following:
 [image7]: ./output_images/training_data_center_2.jpg
 [image8]: ./output_images/training_data_center_3.jpg
 [image9]: ./output_images/training_data_center_4.jpg
+[image10]: ./output_images/actual_data_1.jpg
+[image11]: ./output_images/actual_data_2.jpg
+[image12]: ./output_images/actual_data_3.jpg
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
