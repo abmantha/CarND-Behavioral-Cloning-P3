@@ -103,7 +103,7 @@ Here is a visualization of the architecture (note: visualizing the architecture 
 ![alt text][image2]
 
 #### 3. Creation of the Training Set & Training Process
-For this model, I solely relied on the sample driving data provided by Udacity. For pre-processing, I simply converted images from BGR to RGB color space. In addition, I utilized image data from all 3 cameras. With a basic correction factor of 0.2, I appended the associated steering wheel angle with a correction of 0.2. Furthermore, I flipped all images and produced corresponding steering wheel measures (multiply by -1).  
+For this model, I solely relied on the sample driving data provided by Udacity. For pre-processing, I simply converted images from BGR to RGB color space. In addition, I utilized image data from all 3 cameras. With a basic correction factor of 0.2, I appended the associated steering wheel angle with a correction of 0.2. 
 
 I finally randomly shuffled the data set and put 80% of the data into a validation set. 
 
