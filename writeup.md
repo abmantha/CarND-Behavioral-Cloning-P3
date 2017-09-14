@@ -84,10 +84,11 @@ For this model, I used Udacity's given data set only. Here's a link to a video o
 ![alt text][image8]
 ![alt text][image9]
 
+In total, I train on 19286 samples and validate on 4822 samples.
+
 ### Model Architecture and Training Strategy
 
 #### 1. Solution Design Approach
-
 The overall strategy for deriving a model architecture was primarily out of a strong desire to recreate a known model with real-world application and effectiveness. Initially, I had a desire to use a much larger network like VGG16. However, after reading through Nvidia's implementation, I decided to implement the model myself. For my first implementation of the project, I used my LeNet implementation from Project 2. However, I wanted to try out something different (though it didn't necessarily report terrible results).
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model (LeNet5) had a low mean squared error on the training set and a relatively low mean squared error on the validation set. I didn't really concern myself too much about overfitting, as this implementation worked quite well for Project 2. However, I decided to try out the Nvidia model instead, and I found it worked really nicely. I didn't have to make any major changes to the model architecture, which was very nice. 
