@@ -24,93 +24,73 @@ Woohoo :)
 My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* model-final.h5 containing a trained convolution neural network 
+* writeup.md summarizing the results
 
-####2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+#### 2. Submission includes functional code
+The simulation car can be driven from within the Udacity simulator with the following command in this working directory.
 ```sh
-python drive.py model.h5
+python drive.py model-final.h5
 ```
 
-####3. Submission code is usable and readable
+#### 3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py file contains the code for training and saving the convolution neural network. This file contains the pipeline that I've used to train and validate a deep learning model to autonomously drive the simulation car. Comments are included to further explain my implementation.
 
-###Model Architecture and Training Strategy
+### Model Architecture and Training Strategy
 
-####1. An appropriate model architecture has been employed
+#### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+I implemented the NVIDIA End-to-End learning model created by Bojarski, et al. published on arxiv.org. Here is a link to the original [paper](https://arxiv.org/pdf/1604.07316.pdf). 
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+I chose this model for its simplicity and ease of implementation. It was very exciting being able to recreate a formal publication authored by a team of top researchers from one of the foremost companies in deep learning and AI. 
 
-####2. Attempts to reduce overfitting in the model
+The model consists of 5 convolutional layers that are followed by 3 fully-connected layers, producing a final output value that corresponds to a predicted steering angle. The first layer applies a standard normalization for a given image x of x / 255 - 0.5. This is implemented using a Keras Lambda layer. Input images have a size of 320x160. In addition to normalization, I also crop images to a size of 320x65. I eliminate 75 pixels from the top to eliminate any unnecessary image data such as the sky or mountains and 25 pixels from the bottom of the image to remove the car appearing in the bottom of the frame. 
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+For the first three convolutional layers, the model employs a 5x5 kernel with a 2x2 stride. For the last two convolutional layers, the model simply employs a 3x3 kernel. The first of the fully-connected layers has an input of 1164 features, the second layer has an input of 100 features, and the third layer has an input of 10 features, resulting in an output of a single value.  
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+RELU activations were used on all convolutional layers. 
 
-####3. Model parameter tuning
+#### 2. Attempts to reduce overfitting in the model
+I did not apply any attempts to reduce overfitting in the model. 
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+Here is a screenshot of my AWS EC2 console displaying training and validation losses. 
 
-####4. Appropriate training data
+In 3 epochs, the model significantly drops in training and validation losses. This did worry me. However, after testing on the track, I was able to verify that the model could stay on the track for multiple laps without crossing over valid lane lines or edges. 
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+#### 3. Model parameter tuning
 
-For details about how I created the training data, see the next section. 
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 69). I trained the model for 3 epochs, with a train-test split percentage of 80-20. I chose a MSE loss, mainly because I viewed this model as simply being a powerful regression model. 
 
-###Model Architecture and Training Strategy
+#### 4. Appropriate training data
 
-####1. Solution Design Approach
+I used Udacity's given data set only. I did implement some basic augmentation that I will describe below. 
 
-The overall strategy for deriving a model architecture was to ...
+### Model Architecture and Training Strategy
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+#### 1. Solution Design Approach
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+The overall strategy for deriving a model architecture was primarily out of a strong desire to recreate a known model with real-world application and effectiveness. Initially, I had a desire to use a much larger network like VGG16. However, after reading through Nvidia's implementation, I decided to implement the model myself. For my first implementation of the project, I used my LeNet implementation from Project 2. However, I wanted to try out something different (though it didn't necessarily report terrible results).
 
-To combat the overfitting, I modified the model so that ...
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model (LeNet5) had a low mean squared error on the training set and a relatively low mean squared error on the validation set. I didn't really concern myself too much about overfitting, as this implementation worked quite well for Project 2. However, I decided to try out the Nvidia model instead, and I found it worked really nicely. I didn't have to make any major changes to the model architecture, which was very nice. 
 
-Then I ... 
+The final step was to run the simulator to see how well the car was driving around track one. The vehicle was able to drive autonomously around the track without leaving the road! 
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+I let the model drive for multiple laps and recorded the images. Here's a link to the [video](./video-final.mp4): 
 
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
-####2. Final Model Architecture
-
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+#### 2. Final Model Architecture
 
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
 ![alt text][image1]
 
-####3. Creation of the Training Set & Training Process
+#### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+I solely relied on the sample driving data provided by Udacity. For pre-processing, I simply converted images from BGR to RGB color space. In addition, I utilized image data from all 3 cameras. With a basic correction factor of 0.2, I appended the associated steering wheel angle with a correction of 0.2. Furthermore, I flipped all images and produced corresponding steering wheel measures (multiply by -1).  
 
-![alt text][image2]
+I finally randomly shuffled the data set and put 80% of the data into a validation set. 
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. I chose the split percentages based on widespread advice of researchers and ML practitioners. I trained my model for 3 epochs with an Adam optimizer using MSE as loss.
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
-
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+#### 4. Simulation
+Here is the link to my final video [output](./video-final.mp4). No tire leaves the drivable portion of the track surface, and the car does not pop up onto ledges nor rolls over any surfaces that would otherwise be considered unsafe (if humans were in the vehicle).
