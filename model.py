@@ -50,20 +50,6 @@ for line in lines:
     measurements.append(measurement + correction)
     measurements.append(measurement - correction)        
 
-# Flip all images to double the size of the dataset 
-# Multiply corresponding steering angles by -1
-#   -- represent that the car is going in the opposite way
-#   -- eliminate the bias of primarily left or primarily right curves
-augmented_images = []
-augmented_measurements = []
-for image, measurement in zip(images, measurements): 
-    augmented_images.append(image)
-    augmented_measurements.append(measurement)
-    flipped_image = cv2.flip(image, 1)
-    flipped_measurement = -1.0 * measurement
-    augmented_images.append(flipped_image)
-    augmented_measurements.append(flipped_measurement)
-
 # Create training data
 X_train = np.array(images)
 y_train = np.array(measurements)
