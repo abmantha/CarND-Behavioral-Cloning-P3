@@ -65,6 +65,13 @@ def telemetry(sid, data):
 
         throttle = controller.update(float(speed))
 
+        # throttle = float(throttle)
+        # if throttle < 0.1:
+        #     throttle = 0.29
+        # elif throttle > 0.26:
+        #     throttle = 0.25
+        # throttle += 0.01
+
         print(steering_angle, throttle)
         send_control(steering_angle, throttle)
 
