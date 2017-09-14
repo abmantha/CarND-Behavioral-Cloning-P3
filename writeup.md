@@ -14,6 +14,10 @@ The goals / steps of this project are the following:
 [image3]: ./output_images/all-of-my-attempts.png
 [image4]: ./output_images/all-of-my-attempts-2.png
 [image5]: ./output_images/all-of-my-attempts-3.png
+[image6]: ./output_images/training_data_center_1.jpg
+[image7]: ./output_images/training_data_center_2.jpg
+[image8]: ./output_images/training_data_center_3.jpg
+[image9]: ./output_images/training_data_center_4.jpg
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -70,7 +74,12 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 #### 4. Appropriate training data
 
-For this model, I used Udacity's given data set only. I did implement some basic augmentation that I will describe below. 
+For this model, I used Udacity's given data set only. Here's a link to a video of the collected sample [data](./training_data_video.mp4) I did implement some basic augmentation that I will describe below. 
+
+![alt text][image6]
+![alt text][image7]
+![alt text][image8]
+![alt text][image9]
 
 ### Model Architecture and Training Strategy
 
